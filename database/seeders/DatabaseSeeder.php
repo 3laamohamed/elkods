@@ -14,9 +14,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            PeriodWeekSeeder::class
+            PeriodWeekSeeder::class,
+            ProductTypeSedder::class
         ]);
-
-
     }
 }
