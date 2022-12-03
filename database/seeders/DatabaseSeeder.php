@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PeriodWeekSeeder::class,
-            ProductTypeSedder::class
+//            ProductTypeSedder::class
         ]);
     }
 }

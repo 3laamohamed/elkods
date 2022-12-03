@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomersPriceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,7 @@ use App\Http\Controllers\CustomerController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -46,4 +47,12 @@ Route::group(['controller'=>CustomerController::class],function(){
     Route::post('savCustomers','savCustomers');
     Route::post('updatCustomers','updatCustomers');
     Route::post('deletCustomers','deletCustomers');
+});
+
+################################## Customers Price Routes ###########################
+Route::group(['controller'=>CustomersPriceController::class],function(){
+    Route::get('viewCustomersPrice','index')->name('viewCustomersPrice');
+    Route::post('getLocationsPrice','getLocationsPrice');
+    Route::post('getCustomersInLocation','getCustomersInLocation');
+    Route::post('updateCustomerPrice','updateCustomerPrice');
 });

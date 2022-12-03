@@ -1,0 +1,357 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200;400;600;800;900&display=swap");
+
+/* Start Custom FrameWork */
+:root {
+    --dark-color: #1a202c;
+    --main-color: 21, 157, 113;
+    --main-gradient: radial-gradient(rgb(239, 239, 239), rgb(148, 148, 148));
+    --main-transition: 0.5s ease-in-out;
+    --main-box-shadow: 0 4px 6px -1px rgb(0 0 0 / 60%),
+    0 2px 4px -1px rgb(0 0 0/ 60%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Cairo", sans-serif;
+}
+
+body {
+    direction: rtl;
+    text-align: start;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: rgba(var(--main-color), 0.4);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--main-color), 1);
+}
+
+a {
+    text-decoration: none !important;
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+input[type="checkbox"] + label {
+    position: relative;
+    padding-right: 35px;
+    cursor: pointer;
+}
+
+input[type="checkbox"] + label::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transition: var(--main-transition);
+    -webkit-transition: var(--main-transition);
+    -moz-transition: var(--main-transition);
+    -ms-transition: var(--main-transition);
+    -o-transition: var(--main-transition);
+}
+
+input[type="checkbox"]:checked + label::before {
+    background-color: rgba(var(--main-color), 1);
+    box-shadow: 3px 3px 10px #00000080;
+    animation: popup 0.3s cubic-bezier(0.15, -0.52, 0.76, 1.38) alternate forwards;
+}
+
+input[type="checkbox"]:checked + label::after {
+    content: "\f00c";
+    font: var(--fa-font-solid);
+    color: white;
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    animation: popup 0.3s cubic-bezier(0.15, -0.52, 0.76, 1.38) alternate forwards;
+    -webkit-animation: popup 0.3s cubic-bezier(0.15, -0.52, 0.76, 1.38) alternate forwards;
+}
+
+@keyframes popup {
+    0% {
+        transform: translateY(-50%) scale(0);
+        -webkit-transform: translateY(-50%) scale(0);
+        -moz-transform: translateY(-50%) scale(0);
+        -ms-transform: translateY(-50%) scale(0);
+        -o-transform: translateY(-50%) scale(0);
+    }
+
+    90% {
+        transform: translateY(-50%) scale(1.3);
+        -webkit-transform: translateY(-50%) scale(1.3);
+        -moz-transform: translateY(-50%) scale(1.3);
+        -ms-transform: translateY(-50%) scale(1.3);
+        -o-transform: translateY(-50%) scale(1.3);
+    }
+
+    100% {
+        transform: translateY(-50%) scale(1);
+        -webkit-transform: translateY(-50%) scale(1);
+        -moz-transform: translateY(-50%) scale(1);
+        -ms-transform: translateY(-50%) scale(1);
+        -o-transform: translateY(-50%) scale(1);
+    }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+table thead tr th {
+    color: white;
+}
+
+table tbody tr td {
+    vertical-align: middle;
+}
+
+table.dataTable thead th,
+table.dataTable thead td,
+table.dataTable tfoot th,
+table.dataTable tfoot td {
+    text-align: center;
+}
+
+/* End Custom FrameWork */
+/* Start Fix Bootstrap Err */
+.form-check .form-check-input {
+    float: none;
+    margin: 0;
+    vertical-align: middle;
+    margin-top: 0;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: rgba(var(--main-color), 1);
+    box-shadow: none;
+}
+
+/* End Fix Bootstrap Err */
+/* Start Navbar Design */
+nav.navbar {
+    background-color: var(--dark-color);
+}
+
+nav .toggle-menu svg {
+    color: rgba(var(--main-color), 0.7);
+    cursor: pointer;
+    transition: var(--main-transition);
+    -webkit-transition: var(--main-transition);
+    -moz-transition: var(--main-transition);
+    -ms-transition: var(--main-transition);
+    -o-transition: var(--main-transition);
+}
+
+nav .toggle-menu:hover svg {
+    color: rgba(var(--main-color), 1);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: rgba(var(--main-color), 1);
+    color: var(--bs-dark) !important;
+}
+
+/* End Navbar Design */
+
+/* Start SideBar Design */
+main {
+    display: flex;
+}
+
+aside::-webkit-scrollbar {
+    width: 10px;
+    background-color: rgba(var(--main-color), 1);
+}
+
+aside::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--main-color), 0.5);
+}
+
+aside {
+    background-color: var(--dark-color);
+    width: 80px;
+    height: calc(100vh - 55px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: sticky;
+    top: 55px;
+    box-shadow: var(--main-box-shadow);
+    transition: all 0.5s ease-in-out;
+}
+
+aside.show {
+    width: 250px;
+}
+
+@media (min-width: 576px) {
+    aside:hover {
+        width: 250px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    aside {
+        position: fixed;
+        z-index: 99;
+        width: 0;
+    }
+}
+
+@media (max-width: 575.98px) {
+    aside {
+        min-height: 100vh;
+        top: 0;
+        padding-top: 50px;
+    }
+
+    aside.show {
+        width: 100vw;
+    }
+
+    aside .close {
+        position: absolute;
+        top: 0;
+        right: 10px;
+        color: white;
+        background-color: rgba(var(--main-color), 0.7);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 7px 20px;
+        transition: var(--main-transition);
+        -webkit-transition: var(--main-transition);
+        -moz-transition: var(--main-transition);
+        -ms-transition: var(--main-transition);
+        -o-transition: var(--main-transition);
+    }
+
+    aside .close:hover {
+        background-color: rgba(var(--main-color), 1);
+    }
+}
+
+aside ul {
+    padding: 0;
+}
+
+aside a {
+    display: flex;
+    padding: 12px;
+    color: white;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    text-transform: capitalize;
+}
+
+aside a:hover,
+aside li.active a {
+    background: rgba(var(--main-color), 0.07);
+    color: rgba(var(--main-color), 1);
+}
+
+aside li.active a::before {
+    left: auto;
+    right: 0;
+}
+
+aside a svg {
+    min-width: 60px;
+    flex-shrink: 0;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+aside a span {
+    flex-shrink: 0;
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+}
+
+aside:hover a span,
+aside.show a span {
+    opacity: 1;
+}
+
+aside li.active a::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 100%;
+    background-color: rgba(var(--main-color), 1);
+}
+
+/* End SideBar Design */
+
+/* Start Wrapper Design */
+.wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.wrapper > section {
+    flex-grow: 1;
+    display: flex;
+    padding: 30px 0;
+    justify-content: center;
+}
+
+@media (max-width: 767.98px) {
+    .wrapper {
+        min-height: calc(100vh - 82px);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .wrapper {
+        min-height: calc(100vh - 122px);
+    }
+}
+
+/* End Wrapper Design */
+

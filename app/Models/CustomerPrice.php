@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PeriodWeek extends Model
+class CustomerPrice extends Model
 {
     use HasFactory;
-    protected $table = 'period_weeks';
-    protected $guarded = [];
+    protected $table= 'customer_prices';
     protected $hidden = ['created_at','updated_at'];
+    protected $guarded =[];
 }

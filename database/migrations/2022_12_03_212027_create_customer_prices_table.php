@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePeriodWeeksTable extends Migration
+class CreateCustomerPricesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreatePeriodWeeksTable extends Migration
      */
     public function up()
     {
-        Schema::create('period_weeks', function (Blueprint $table) {
+        Schema::create('customer_prices', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('name_en');
+            $table->integer('customer');
+            $table->integer('type_id');
+            $table->string('type_name',50);
+            $table->double('price',10,2)->default(0);
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class CreatePeriodWeeksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('period_weeks');
+        Schema::dropIfExists('customer_prices');
     }
 }

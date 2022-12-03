@@ -10,10 +10,10 @@ use Illuminate\Validation\Rules\In;
 class InfoController extends Controller
 {
     use MainFunction;
-//    public function __construct()
-//    {
-//        $this->middleware('auth');
-//    }
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(){
         return view('info');
     }

@@ -1,7 +1,7 @@
-@php $title='العملاء';@endphp
+@php $title='تغير اسعار';@endphp
 @extends('layouts.app')
 @section('content')
     <section class="component_items">
-        <customers/>
+        <customer_price/>
     </section>
 @stop
