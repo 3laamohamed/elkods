@@ -12,11 +12,11 @@ use Illuminate\Http\Request;
 
 class CustomersPriceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(){
-
-//        $day =  Carbon::tomorrow()->format('l');
-//        $dayIn = PeriodWeek::where(['name_en'=>$day])->first();
-//        return $dayIn ->name;
         return view('customer_price');
     }
     public function getLocationsPrice(){

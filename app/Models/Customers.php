@@ -16,4 +16,7 @@ class Customers extends Model
     public function price(){
         return $this->hasMany(CustomerPrice::class , 'customer','id');
     }
+    public function pricequantity(){
+        return $this->hasMany(milkSupply::class ,'customer','id');
+    }
 }

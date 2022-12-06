@@ -5,6 +5,7 @@ use App\Http\Controllers\InfoController;
 use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomersPriceController;
+use App\Http\Controllers\MilkSupplyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,4 +56,14 @@ Route::group(['controller'=>CustomersPriceController::class],function(){
     Route::post('getLocationsPrice','getLocationsPrice');
     Route::post('getCustomersInLocation','getCustomersInLocation');
     Route::post('updateCustomerPrice','updateCustomerPrice');
+});
+
+######################################### Sales ###################################
+Route::group(['controller'=>MilkSupplyController::class],function(){
+    Route::get('viewMilkSupply','index')->name('viewMilkSupply');
+    Route::post('getSupplyMilk','getSupplyMilk');
+    Route::post('getCustomersInLocationSupply','getCustomersInLocationSupply');
+    Route::post('changeShift','changeShift');
+    Route::post('saveOrderSupply','saveOrderSupply');
+
 });

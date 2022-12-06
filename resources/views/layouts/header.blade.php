@@ -76,14 +76,14 @@
       </li>
         <li class="@if(Route::current()->getName() == 'viewCustomersPrice') active @endif">
           <a href="{{route('viewCustomersPrice')}}">
-            <i class="fa-solid fa-ticket fa-xl"></i>
+              <i class="fa-solid fa-sack-dollar fa-xl"></i>
             <span>تغير اسعار</span>
           </a>
         </li>
-        <li>
-          <a href="team.html">
-            <i class="fa-solid fa-user-lock fa-xl"></i>
-            <span>team password</span>
+        <li class="@if(Route::current()->getName() == 'viewMilkSupply') active @endif">
+          <a href="{{route('viewMilkSupply')}}">
+            <i class="fa-solid fa-truck-droplet fa-xl"></i>
+            <span>توريد لبن</span>
           </a>
         </li>
         <li>
