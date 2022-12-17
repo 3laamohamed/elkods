@@ -39,6 +39,7 @@
                             <th>رقم الهاتف</th>
                             <th>النوع</th>
                             <th>المنطقة</th>
+                            <th>الحساب</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -67,8 +68,14 @@
                                 </select>
                             </td>
                             <td>
+                                <span  :class="customer.money >= 0?'text-success fs-5':'text-danger fs-5'">{{ customer.money }}</span>
+                                <!--<input class="form-control text-center" type="text" v-model="updateMoney" v-else>-->
+                            </td>
+                            <td>
                                 <button class="btn btn-primary mx-2 my-2 text-center" v-if="edit != customer.id" @click="changeRow(customer)">تعديل</button>
-                                <button class="btn btn-success mx-2 my-2 text-center" v-else @click="updateCustomer(index)">حفظ</button>
+                                <div class="d-grid mx-auto" v-else>
+                                    <button class="btn btn-success" @click="updateCustomer(index)">حفظ</button>
+                                </div>
                                 <button class="btn btn-danger mx-2" v-if="edit != customer.id" @click="deleteCustomer(customer.id,index)">حذف</button>
                             </td>
 
@@ -86,7 +93,7 @@ export default {
     data() {
         return {
             location:'',
-            type:'',
+            type:'مورد',
             name:'',
             phone:'',
             customers:[],
@@ -95,6 +102,7 @@ export default {
             updateName:'',
             updatePhone:'',
             updateType:'',
+            updateMoney:0,
             updateLocationId:'',
             updateLocationName:'',
         }
@@ -113,6 +121,7 @@ export default {
                         location:customer.location.name,
                         locationsId:customer.location.id,
                         type:customer.type,
+                        money:customer.money,
                     })
                 });
                 res.data.locations.forEach((loc)=>{
@@ -135,6 +144,7 @@ export default {
                     phone:this.phone,
                     name:this.name,
                     type:this.type,
+                    money:0,
                     location:this.locations.find(loc => loc.id == this.location ).name,
                 });
                 this.name = ''
@@ -156,6 +166,7 @@ export default {
             this.updatePhone = customer.phone
             this.updateType = customer.type
             this.updateLocationId = customer.locationsId
+            this.updateMoney = customer.money
         },
         updateCustomer(index){
             this.updateLocationName = this.locations.find(location => location.id == this.updateLocationId ).name
@@ -165,6 +176,7 @@ export default {
                 name:this.updateName,
                 location:this.updateLocationId,
                 type:this.updateType,
+                money:this.updateMoney,
             }).then(response => {
                 if (response.data.status == true) {
                     this.customers[index] = {
@@ -173,7 +185,8 @@ export default {
                         name:this.updateName,
                         locationsId:this.updateLocationId,
                         type:this.updateType,
-                        location:this.updateLocationName
+                        location:this.updateLocationName,
+                        money:this.updateMoney
                     }
                     this.edit = ''
                     this.updateName = ''
@@ -181,6 +194,7 @@ export default {
                     this.updateType = ''
                     this.updateLocationId = ''
                     this.updateLocationName = ''
+                    this.updateMoney = ''
                 }
                 this.viewAlert(response.data.status , response.data.data)
             })

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Traits\MainFunction;
 
 class HomeController extends Controller
 {
@@ -11,6 +12,7 @@ class HomeController extends Controller
      *
      * @return void
      */
+    use MainFunction;
     public function __construct()
     {
         $this->middleware('auth');
@@ -23,6 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('welcome');
+        $this->endDay();
+        return view('milk_supply');
     }
 }

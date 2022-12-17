@@ -49,6 +49,7 @@ class CustomerController extends Controller
             'phone' =>$request->phone,
             'location' =>$request->location,
             'type' =>$request->type,
+            'money' =>$request->money,
         ]);
         if($update){
             return ['status'=>true,'data'=>'تم التعديل بنجاح'];

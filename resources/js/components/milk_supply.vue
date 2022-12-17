@@ -23,11 +23,17 @@
             <table class="table table-hover table-striped text-center">
                 <thead>
                 <tr class="table-dark sticky-top">
-                    <th scope="col">#</th>
-                    <th scope="col">اسم العميل</th>
-                    <th scope="col">النوع</th>
-                    <th scope="col" v-for="(product,index) in products" :value="product.id">{{product.name}}</th>
-                    <th></th>
+                    <th rowspan="2">#</th>
+                    <th rowspan="2">اسم العميل</th>
+                    <th rowspan="2">النوع</th>
+                    <th colspan="2" v-for="(product,index) in products" :value="product.id">{{product.name}}</th>
+                    <th rowspan="2"></th>
+                </tr>
+                <tr class="table-dark sticky-top">
+                    <template v-for="(product,index) in products">
+                        <th>سعر</th>
+                        <th>كمية</th>
+                    </template>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,22 +41,22 @@
                         <td>{{customer.id}}</td>
                         <td>{{customer.name}}</td>
                         <td>{{customer.type}}</td>
-                        <td v-for="(price, i) in customer.price" :key="price.id">
-                            <div class="gap-2 text-center" v-if="edite!= customer.id">
-                                <span>{{price.price}}</span>
-                                <span class="text-primary fs-5"> | {{price.quantity}}</span>
-                            </div>
-                            <div class="d-flex gap-md-1 flex-column" v-if="edite == customer.id">
-                                <div class="input-group">
+                        <template v-for="(price, i) in customer.price" :key="price.id">
+                            <td>
+                                <span v-if="edite!= customer.id">{{price.price}}</span>
+                                <div class="input-group" v-if="edite == customer.id">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-sack-dollar"></i></span>
                                     <input type="text" class="form-control text-center" v-model="price.price" @input="changePrice(customer.id,price.id, price.price)">
                                 </div>
-                                <div class="input-group">
+                            </td>
+                            <td>
+                                <span v-if="edite!= customer.id">{{price.quantity}}</span>
+                                <div class="input-group" v-if="edite == customer.id">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-weight-scale"></i></span>
                                     <input type="number" class="form-control text-center" v-model="price.quantity" @input="changeQuantity(customer.id,price.id,price.quantity)">
                                 </div>
-                            </div>
-                        </td>
+                            </td>
+                        </template>
                         <td>
                             <button class="btn btn-primary mx-2 my-2" v-if="edite != customer.id" @click="changeRow(customer)">تعديل</button>
                             <button class="btn btn-success mx-2 my-2" v-else @click="updateCustomer(index, customer.id)">حفظ</button>
@@ -72,7 +78,6 @@ export default {
             location:'all',
             edite:'',
             shift:'صباحي'
-
         }
     },
     mounted() {

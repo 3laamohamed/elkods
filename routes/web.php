@@ -6,6 +6,8 @@ use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomersPriceController;
 use App\Http\Controllers\MilkSupplyController;
+use App\Http\Controllers\customerMoneyController;
+use App\Http\Controllers\customersBorrowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,5 +67,24 @@ Route::group(['controller'=>MilkSupplyController::class],function(){
     Route::post('getCustomersInLocationSupply','getCustomersInLocationSupply');
     Route::post('changeShift','changeShift');
     Route::post('saveOrderSupply','saveOrderSupply');
-
 });
+
+################################## Customer Money ##############################
+Route::group(['controller'=>customerMoneyController::class],function (){
+    Route::get('viewCustomerMoney','index')->name('viewCustomerMoney');
+    Route::post('getCustomersMoney','fetchData');
+    Route::post('saveCustomersMoney','addMoney');
+    Route::post('deletCustomersMoney','deleteMoney');
+    Route::post('updateCustomersMoney','updateMoney');
+});
+
+################################## customersBorrowController ##############################
+Route::group(['controller'=>customersBorrowController::class],function (){
+    Route::get('viewCustomerBorrow','index')->name('viewCustomerBorrow');
+    Route::post('getCustomersBorrow','fetchData');
+    Route::post('saveCustomersBorrow','addMoney');
+    Route::post('deleteCustomersBorrow','deleteMoney');
+    Route::post('updateCustomersBorrow','updateMoney');
+});
+
+

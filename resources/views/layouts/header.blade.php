@@ -76,26 +76,26 @@
       </li>
         <li class="@if(Route::current()->getName() == 'viewCustomersPrice') active @endif">
           <a href="{{route('viewCustomersPrice')}}">
-              <i class="fa-solid fa-sack-dollar fa-xl"></i>
+              <i class="fa-solid fa-money-bill-transfer fa-xl"></i>
             <span>تغير اسعار</span>
           </a>
         </li>
-        <li class="@if(Route::current()->getName() == 'viewMilkSupply') active @endif">
+        <li class="@if(Route::current()->getName() == 'viewMilkSupply' || Route::current()->getName() == 'home' ) active @endif">
           <a href="{{route('viewMilkSupply')}}">
             <i class="fa-solid fa-truck-droplet fa-xl"></i>
             <span>توريد لبن</span>
           </a>
         </li>
-        <li>
-          <a href="order.html">
-            <i class="fa-solid fa-list-check fa-xl"></i>
-            <span>order list</span>
+        <li class="@if(Route::current()->getName() == 'viewCustomerMoney') active @endif">
+          <a href="{{route('viewCustomerMoney')}}">
+              <i class="fa-solid fa-sack-dollar fa-xl"></i>
+            <span>إذن صرف</span>
           </a>
         </li>
-        <li>
-          <a href="memberships.html">
-            <i class="fa-solid fa-users fa-xl"></i>
-            <span>memberships</span>
+        <li class="@if(Route::current()->getName() == 'viewCustomerBorrow') active @endif">
+          <a href="{{route('viewCustomerBorrow')}}">
+              <i class="fa-solid fa-hand-holding-dollar fa-xl"></i>
+              <span>إذن سلفة</span>
           </a>
         </li>
       </ul>

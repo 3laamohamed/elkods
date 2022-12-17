@@ -58,7 +58,9 @@
                             </td>
                             <td>
                                 <button class="btn btn-primary mx-2 my-2 text-center" v-if="edit != loc.id" @click="changeRow(loc)">تعديل</button>
-                                <button class="btn btn-success mx-2 my-2 text-center" v-else @click="updateLocations(index)">حفظ</button>
+                                <div class="d-grid mx-auto" v-else>
+                                    <button class="btn btn-success" @click="updateLocations(index)">حفظ</button>
+                                </div>
                                 <button class="btn btn-danger mx-2" v-if="edit != loc.id" @click="deleteLocations(loc.id,index)">حذف</button>
                             </td>
                         </tr>
