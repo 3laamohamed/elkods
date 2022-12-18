@@ -166,7 +166,9 @@ table.dataTable tfoot td {
     border-color: rgba(var(--main-color), 1);
     box-shadow: none;
 }
-
+.table {
+    margin-bottom: 0 !important;
+}
 /* End Fix Bootstrap Err */
 /* Start Navbar Design */
 nav.navbar {
@@ -234,7 +236,7 @@ aside.show {
 @media (max-width: 767.98px) {
     aside {
         position: fixed;
-        z-index: 99;
+        z-index: 9999;
         width: 0;
     }
 }

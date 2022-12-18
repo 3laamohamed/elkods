@@ -84,9 +84,9 @@ class MilkSupplyController extends Controller
                $moneyInc = $order['price'] * $order['quantity'];
                $this->increaseMoney($request->id,$moneyInc);
                $getRow->save();
-               return ['status'=>true,'data'=>'تم التعديل بنجاح'];
-           }elseif(!isset($order['row']) && $order['quantity'] != 0){
-                $day =  Carbon::today();
+//               return ['status'=>true,'data'=>'تم التعديل بنجاح'];
+           }elseif(!isset($order['row']) && $order['quantity'] != ''){
+                $day =  Carbon::today('Africa/Cairo');
                 $dayIn = PeriodWeek::where(['name_en'=>$day->format('l')])->first();
                $addRow = milkSupply::create([
                    'customer'=>$request->id,
@@ -100,8 +100,10 @@ class MilkSupplyController extends Controller
                ]);
                $money = $order['price'] * $order['quantity'];
                $this->increaseMoney($request->id,$money);
-               return ['status'=>true,'data'=>'تم الحفط بنجاح'];
            }
        }
+        $customer =  Customers::limit(1)->with('price','price.pricequantity')->where(['id'=>$request->id])->get();
+       $newcus = $this->getSuppliersMilk($customer,$request->shift);
+        return ['status'=>true,'customer'=>$newcus[0],'data'=>'تم الحفط بنجاح'];
     }
 }

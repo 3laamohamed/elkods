@@ -16,7 +16,7 @@ Trait MainFunction {
         return asset() . 'assets/info/' . $file_name;
     }
     public function endDay(){
-        $date =  Carbon::today()->toDateString();
+        $date =  $this->getDate();
         $data = milkSupply::where('date','!=',$date)->get();
         foreach ($data as $row){
             supplyPeriod::create([

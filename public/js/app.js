@@ -23474,7 +23474,8 @@ __webpack_require__.r(__webpack_exports__);
       customers: [],
       location: 'all',
       edite: '',
-      shift: 'صباحي'
+      shift: 'صباحي',
+      totalQty: []
     };
   },
   mounted: function mounted() {
@@ -23498,6 +23499,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         });
         _this.customers = res.data.customers;
+        _this.calcFooterTable();
       });
     },
     getCustomers: function getCustomers() {
@@ -23507,6 +23509,8 @@ __webpack_require__.r(__webpack_exports__);
         shift: this.shift
       }).then(function (res) {
         _this2.customers = res.data.customers;
+        _this2.totalQty = [];
+        _this2.calcFooterTable();
       });
     },
     changeRow: function changeRow(customer) {
@@ -23534,8 +23538,10 @@ __webpack_require__.r(__webpack_exports__);
         order: this.updatePrice,
         shift: this.shift
       }).then(function (res) {
-        _this3.customers[index].price = _this3.updatePrice;
+        _this3.customers[index] = res.data.customer;
         _this3.edite = '';
+        _this3.totalQty = [];
+        _this3.calcFooterTable();
         _this3.$swal({
           position: 'center-center',
           icon: 'success',
@@ -23551,6 +23557,32 @@ __webpack_require__.r(__webpack_exports__);
         shift: this.shift
       }).then(function (res) {
         _this4.customers = res.data.customers;
+        _this4.totalQty = [];
+        _this4.calcFooterTable();
+      });
+    },
+    calcFooterTable: function calcFooterTable() {
+      var _this5 = this;
+      this.customers.forEach(function (customer) {
+        if (_this5.totalQty.length == 0) {
+          // this.totalQty = new Array(customer.price.length)
+          customer.price.forEach(function (qty) {
+            _this5.totalQty.push({
+              id: qty.type_id,
+              price: qty.price * (qty.quantity || 0),
+              quantity: qty.quantity || 0
+            });
+          });
+        } else {
+          customer.price.forEach(function (qty) {
+            _this5.totalQty.forEach(function (total) {
+              if (qty.type_id == total.id) {
+                total.price += qty.price * (qty.quantity || 0);
+                total.quantity += qty.quantity || 0;
+              }
+            });
+          });
+        }
       });
     }
   }
@@ -24511,7 +24543,7 @@ var _withScopeId = function _withScopeId(n) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-0b2001d0"), n = n(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)(), n;
 };
 var _hoisted_1 = {
-  "class": "container"
+  "class": "container-fluid"
 };
 var _hoisted_2 = {
   "class": "col-12"
@@ -24582,7 +24614,7 @@ var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
   }, null, -1 /* HOISTED */);
 });
 var _hoisted_20 = {
-  "class": "table-dark sticky-top"
+  "class": "table-dark sticky-top sticky-top-second"
 };
 var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "سعر", -1 /* HOISTED */);
@@ -24624,6 +24656,18 @@ var _hoisted_29 = /*#__PURE__*/_withScopeId(function () {
 var _hoisted_30 = ["onUpdate:modelValue", "onInput"];
 var _hoisted_31 = ["onClick"];
 var _hoisted_32 = ["onClick"];
+var _hoisted_33 = {
+  "class": "table-dark sticky-bottom"
+};
+var _hoisted_34 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    colspan: "3"
+  }, "الاجمالي", -1 /* HOISTED */);
+});
+var _hoisted_35 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1 /* HOISTED */);
+});
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-select",
@@ -24694,7 +24738,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         return $options.updateCustomer(index, customer.id);
       }
     }, "حفظ", 8 /* PROPS */, _hoisted_32))])]);
-  }), 128 /* KEYED_FRAGMENT */))])])])]);
+  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", _hoisted_33, [_hoisted_34, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.totalQty, function (total, i) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+      key: total.id
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(total.price), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(total.quantity), 1 /* TEXT */)], 64 /* STABLE_FRAGMENT */);
+  }), 128 /* KEYED_FRAGMENT */)), _hoisted_35])])])])]);
 }
 
 /***/ }),
@@ -30203,7 +30251,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.shift-select[data-v-0b2001d0] {\n    margin-right: auto;\n    width: 200px;\n}\nthead[data-v-0b2001d0], tbody[data-v-0b2001d0], tfoot[data-v-0b2001d0], tr[data-v-0b2001d0], td[data-v-0b2001d0], th[data-v-0b2001d0] {\n    white-space: nowrap;\n}\n.table[data-v-0b2001d0]{\n    vertical-align: middle;\n}\n.table-responsive[data-v-0b2001d0]{\n    max-height: 500px;\n}\n.select-box[data-v-0b2001d0]{\n    width: 125px;\n}\n.input-group-text[data-v-0b2001d0],.form-control[data-v-0b2001d0]{\n    border-radius: 0;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.shift-select[data-v-0b2001d0] {\n    margin-right: auto;\n    width: 200px;\n}\nthead[data-v-0b2001d0], tbody[data-v-0b2001d0], tfoot[data-v-0b2001d0], tr[data-v-0b2001d0], td[data-v-0b2001d0], th[data-v-0b2001d0] {\n    white-space: nowrap;\n    vertical-align: middle !important;\n}\n.table[data-v-0b2001d0]{\n}\n.table-responsive[data-v-0b2001d0]{\n    max-height: 75vh;\n}\n.select-box[data-v-0b2001d0]{\n    width: 125px;\n}\n.input-group-text[data-v-0b2001d0],.form-control[data-v-0b2001d0]{\n    border-radius: 0;\n}\n.sticky-top-second[data-v-0b2001d0] {\n    top: 39.974px !important\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

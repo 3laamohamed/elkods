@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="col-12">
             <div class="d-flex align-items-end gap-2">
                 <div>
@@ -29,7 +29,7 @@
                     <th colspan="2" v-for="(product,index) in products" :value="product.id">{{product.name}}</th>
                     <th rowspan="2"></th>
                 </tr>
-                <tr class="table-dark sticky-top">
+                <tr class="table-dark sticky-top sticky-top-second">
                     <template v-for="(product,index) in products">
                         <th>سعر</th>
                         <th>كمية</th>
@@ -63,6 +63,16 @@
                         </td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <tr class="table-dark sticky-bottom">
+                        <td colspan="3">الاجمالي</td>
+                        <template v-for="(total, i) in totalQty" :key="total.id">
+                            <td>{{total.price}}</td>
+                            <td>{{total.quantity}}</td>
+                        </template>
+                        <td></td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -77,7 +87,8 @@ export default {
             customers:[],
             location:'all',
             edite:'',
-            shift:'صباحي'
+            shift:'صباحي',
+            totalQty: []
         }
     },
     mounted() {
@@ -100,6 +111,7 @@ export default {
                     })
                 });
                 this.customers = res.data.customers
+                this.calcFooterTable()
             });
         },
         getCustomers(){
@@ -108,6 +120,8 @@ export default {
                 shift:this.shift
             }).then((res)=> {
                 this.customers = res.data.customers
+                this.totalQty = []
+                this.calcFooterTable()
             })
         },
         changeRow(customer){
@@ -134,8 +148,10 @@ export default {
                order:this.updatePrice,
                shift:this.shift
             }).then(res=>{
-                this.customers[index].price = this.updatePrice
+                this.customers[index] = res.data.customer
                this.edite = ''
+               this.totalQty = []
+               this.calcFooterTable()
                this.$swal({
                    position: 'center-center',
                    icon: 'success',
@@ -150,8 +166,33 @@ export default {
               shift:this.shift
           }).then(res=>{
               this.customers = res.data.customers
+              this.totalQty = []
+              this.calcFooterTable()
           })
         },
+        calcFooterTable() {
+            this.customers.forEach(customer => {
+                if(this.totalQty.length == 0) {
+                    // this.totalQty = new Array(customer.price.length)
+                    customer.price.forEach(qty => {
+                        this.totalQty.push({
+                            id : qty.type_id,
+                            price:qty.price * (qty.quantity || 0),
+                            quantity : qty.quantity || 0
+                        })
+                    })
+                }else{
+                    customer.price.forEach(qty => {
+                        this.totalQty.forEach(total => {
+                            if(qty.type_id == total.id){
+                                total.price += qty.price * (qty.quantity || 0);
+                                total.quantity += qty.quantity || 0
+                            }
+                        })
+                    })
+                }
+            });
+        }
     }
 }
 </script>
@@ -162,18 +203,21 @@ export default {
 }
 thead, tbody, tfoot, tr, td, th {
     white-space: nowrap;
+    vertical-align: middle !important;
 }
 .table{
-    vertical-align: middle;
 }
 .table-responsive{
-    max-height: 500px;
+    max-height: 75vh;
 }
 .select-box{
     width: 125px;
 }
 .input-group-text,.form-control{
     border-radius: 0;
+}
+.sticky-top-second {
+    top: 39.974px !important
 }
 </style>
 
