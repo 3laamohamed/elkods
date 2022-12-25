@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomersPriceController;
 use App\Http\Controllers\MilkSupplyController;
 use App\Http\Controllers\customerMoneyController;
 use App\Http\Controllers\customersBorrowController;
+use App\Http\Controllers\followSuppliersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,4 +88,10 @@ Route::group(['controller'=>customersBorrowController::class],function (){
     Route::post('updateCustomersBorrow','updateMoney');
 });
 
-
+############################################ follow suppliers ############################
+Route::group(['controller'=>followSuppliersController::class],function (){
+    Route::get('viewFollowSuppliers','index')->name('viewFollowSuppliers');
+    Route::post('getCustomersPeriod','fetchData');
+    Route::post('getCustomersPeriodLocation','fetchDataLocation');
+    Route::get('detailsSupplier/supplier/{user}','detailsSupplier');
+});

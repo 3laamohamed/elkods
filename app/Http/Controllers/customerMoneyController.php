@@ -20,7 +20,7 @@ class customerMoneyController extends Controller
     }
     public function fetchData(){
         $data = customerMoney::with('customers')->where(['date'=>$this->getDate()])->get();
-        $customers = Customers::get()->all();
+        $customers = Customers::where(['type'=>'مورد'])->get();
         return ['customers'=>$customers,'data'=>$data];
     }
     public function addMoney(customerMoneyRequest $request){

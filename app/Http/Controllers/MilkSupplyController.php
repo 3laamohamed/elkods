@@ -58,19 +58,19 @@ class MilkSupplyController extends Controller
     public function getSupplyMilk(){
         $locations = Locations::get()->all();
         $products = ProductType::get()->all();
-        $customers =  Customers::with('price','price.pricequantity')->get();
+        $customers =  Customers::with('price','price.pricequantity')->where(['type'=>'مورد'])->get();
         return ['locations'=>$locations,'products'=>$products,'customers'=>$this->getSuppliersMilk($customers,'صباحي')];
     }
     public function getCustomersInLocationSupply(Request $request){
         if($request->id == 'all'){
-            $customers =  Customers::with('price','price.pricequantity')->get();
+            $customers =  Customers::with('price','price.pricequantity')->where(['type'=>'مورد'])->get();
         }else{
-            $customers =  Customers::with('price','price.pricequantity')->where(['location'=>$request->id])->get();
+            $customers =  Customers::with('price','price.pricequantity')->where(['location'=>$request->id,'type'=>'مورد'])->get();
         }
         return ['customers'=>$this->getSuppliersMilk($customers,'صباحي')];
     }
     public function changeShift(Request $request){
-        $customers =  Customers::with('price','price.pricequantity')->get();
+        $customers =  Customers::with('price','price.pricequantity')->where(['type'=>'مورد'])->get();
         return ['customers'=>$this->getSuppliersMilk($customers,$request->shift)];
     }
     public function saveOrderSupply(Request $request){

@@ -22,7 +22,7 @@ class customersBorrowController extends Controller
     }
     public function fetchData(){
         $data = customersBorrow::with('customers')->get();
-        $customers = Customers::get()->all();
+        $customers = Customers::where(['type'=>'مورد'])->get();
         return ['customers'=>$customers,'data'=>$data];
     }
     public function addMoney(customerBorrowRequest $request){

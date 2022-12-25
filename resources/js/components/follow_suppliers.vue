@@ -18,8 +18,8 @@
                 <tr class="table-dark sticky-top">
                     <th scope="col">#</th>
                     <th scope="col">اسم العميل</th>
-                    <th scope="col">النوع</th>
-                    <th scope="col" v-for="(product,index) in products" :value="product.id">{{product.name}}</th>
+                    <th scope="col">الكمية</th>
+                    <th scope="col">الاجمالي</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -27,14 +27,10 @@
                     <tr v-for="(customer, index) in customers" :key="customer.id">
                         <td>{{customer.id}}</td>
                         <td>{{customer.name}}</td>
-                        <td>{{customer.type}}</td>
-                        <td v-for="(price, i) in customer.price" :key="price.id">
-                            <span v-if="edite != customer.id">{{price.price}}</span>
-                            <input type="number" class="form-control text-center" v-model="price.price" v-else @input="changePrice(price.id, price.price)">
-                        </td>
+                        <td>{{customer.qty}}</td>
+                        <td>{{customer.total}}</td>
                         <td>
-                            <button class="btn btn-primary mx-2 my-2 text-center" v-if="edite != customer.id" @click="changeRow(customer)">تعديل</button>
-                            <button class="btn btn-success mx-2 my-2 text-center" v-else @click="updateCustomer(index, customer.id)">حفظ</button>
+                            <button class="btn btn-primary mx-2 my-2 text-center" @click="changeRow(customer.id)">تفاصيل</button>
                         </td>
                     </tr>
                 </tbody>
@@ -54,6 +50,7 @@ export default {
             customers:[],
             location:'all',
             edite:'',
+            customerLink: ''
 
         }
     },
@@ -63,7 +60,7 @@ export default {
     methods:{
         getLocations(){
             this.customers = []
-            axios.post('/getLocationsPrice').then((res)=>{
+            axios.post('/getCustomersPeriod').then((res)=>{
                 res.data.locations.forEach((loc)=>{
                     this.locations.push({
                         id:loc.id,
@@ -80,15 +77,14 @@ export default {
             });
         },
         getCustomers(){
-            axios.post('/getCustomersInLocation',{
+            axios.post('/getCustomersPeriodLocation',{
                 id:this.location
             }).then((res)=> {
                 this.customers = res.data.customers
             })
         },
         changeRow(customer){
-            this.edite = customer.id
-            this.updatePrice = customer.price
+            window.location= `/detailsSupplier/supplier/${customer}`
         },
         changePrice(priceId, newPrice) {
             this.updatePrice.forEach(price => {

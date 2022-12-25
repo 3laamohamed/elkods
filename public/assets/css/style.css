@@ -169,6 +169,10 @@ table.dataTable tfoot td {
 .table {
     margin-bottom: 0 !important;
 }
+th, td {
+    vertical-align: middle;
+    white-space: nowrap;
+}
 /* End Fix Bootstrap Err */
 /* Start Navbar Design */
 nav.navbar {

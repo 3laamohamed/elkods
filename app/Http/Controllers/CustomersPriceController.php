@@ -22,11 +22,15 @@ class CustomersPriceController extends Controller
     public function getLocationsPrice(){
         $locations = Locations::get()->all();
         $products = ProductType::get()->all();
-        $customers =  Customers::with('price')->get();
+        $customers =  Customers::with('price')->where(['type'=>'مورد'])->get();
         return ['locations'=>$locations,'products'=>$products,'customers'=>$customers];
     }
     public function getCustomersInLocation(Request $request){
-        $customers =  Customers::with('price')->where(['location'=>$request->id])->get();
+        if($request->id != 'all'){
+            $customers =  Customers::with('price')->where(['location'=>$request->id,'type'=>'مورد'])->get();
+        }else{
+            $customers =  Customers::with('price')->where(['type'=>'مورد'])->get();
+        }
         return ['customers'=>$customers];
     }
     public function updateCustomerPrice(Request $request){

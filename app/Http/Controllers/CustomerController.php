@@ -20,7 +20,7 @@ class CustomerController extends Controller
     }
     public function getCustomers(){
         $locations = Locations::get()->all();
-        $customers = Customers::with('location')->get()->all();
+        $customers = Customers::with('locations')->get()->all();
         return ['locations'=>$locations,'customers'=>$customers];
     }
     public function savCustomers(CustomerRequest $request){

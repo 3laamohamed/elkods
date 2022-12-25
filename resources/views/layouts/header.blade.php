@@ -98,6 +98,12 @@
               <span>إذن سلفة</span>
           </a>
         </li>
+      <li class="@if(Route::current()->getName() == 'viewFollowSuppliers') active @endif">
+          <a href="{{route('viewFollowSuppliers')}}">
+              <i class="fa-solid fa-users-gear fa-xl"></i>
+              <span>متابعة الموردين</span>
+          </a>
+      </li>
       </ul>
     </aside>
     <!-- End Sidebar -->

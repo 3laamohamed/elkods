@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ProductType extends Model
 {
     use HasFactory;
+    protected $hidden = ['created_at','updated_at'];
     protected $guarded = [];
 }

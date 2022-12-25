@@ -14,4 +14,7 @@ class CustomerPrice extends Model
     public function pricequantity(){
         return $this->hasMany(milkSupply::class ,'type','type_id');
     }
+    public function quantityperiod(){
+        return $this->hasMany(supplyPeriod::class ,'type','type_id');
+    }
 }

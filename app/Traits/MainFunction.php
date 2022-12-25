@@ -20,7 +20,6 @@ Trait MainFunction {
         $data = milkSupply::where('date','!=',$date)->get();
         foreach ($data as $row){
             supplyPeriod::create([
-                'id'=>$row->id,
                 'customer'=>$row->customer,
                 'date'=>$row->date,
                 'day'=>$row ->day,

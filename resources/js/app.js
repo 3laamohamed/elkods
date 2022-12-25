@@ -11,6 +11,7 @@ import customer_price from './components/customer_price'
 import milk_supply from './components/milk_supply'
 import customer_money from './components/customer_money'
 import customer_borrow from './components/customer_borrow'
+import follow_suppliers from './components/follow_suppliers'
 
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -26,5 +27,6 @@ app.component('customer_price', customer_price)
 app.component('milk_supply', milk_supply)
 app.component('customer_money', customer_money)
 app.component('customer_borrow', customer_borrow)
+app.component('follow_suppliers', follow_suppliers)
 
 app.mount('#app')

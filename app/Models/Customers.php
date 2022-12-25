@@ -10,7 +10,7 @@ class Customers extends Model
     use HasFactory;
     protected $guarded = [];
     protected $hidden = ['created_at','updated_at'];
-    public function location(){
+    public function locations(){
         return $this->belongsTo(Locations::class,'location','id');
     }
     public function price(){
@@ -19,4 +19,11 @@ class Customers extends Model
     public function pricequantity(){
         return $this->hasMany(milkSupply::class ,'customer','id');
     }
+    public function suppliers_periods(){
+        return $this->hasMany(supplyPeriod::class , 'customer','id');
+    }
+    public function suppliers_day(){
+        return $this->hasMany(milkSupply::class , 'customer','id');
+    }
 }
+

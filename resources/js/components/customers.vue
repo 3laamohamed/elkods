@@ -118,8 +118,8 @@ export default {
                         id:customer.id,
                         phone:customer.phone,
                         name:customer.name,
-                        location:customer.location.name,
-                        locationsId:customer.location.id,
+                        location:customer.locations.name,
+                        locationsId:customer.locations.id,
                         type:customer.type,
                         money:customer.money,
                     })
