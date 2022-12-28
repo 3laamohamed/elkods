@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\customerPeriods;
 use App\Models\Customers;
 use App\Models\customersBorrow;
 use App\Models\Info;
 use App\Models\Locations;
 use App\Models\milkSupply;
+use App\Models\periodsData;
 use App\Models\PeriodWeek;
+use App\Models\procurementBorrow;
 use App\Models\ProductType;
 use App\Models\supplyPeriod;
+use App\Traits\MainFunction;
 use Illuminate\Http\Request;
+
 
 class followSuppliersController extends Controller
 {
+    use MainFunction;
     public function __construct()
     {
         $this->middleware('auth');
@@ -157,9 +163,79 @@ class followSuppliersController extends Controller
         $getCustomers =  Customers::with('suppliers_periods','suppliers_day')->where(['id'=>$costomerSearch])->get();
         $dataCustomer =  $this->getCustomerTotal($getCustomers);
         $dataCustomer = $dataCustomer[0];
-        $borrow = customersBorrow::limit(1)->where(['customer_id'=>$costomerSearch])->first();
+        $borrow = customersBorrow::limit(1)->where(['customer_id'=>$costomerSearch,'status'=>1])->first();
+        if($borrow){
+            $checkval = $borrow->borrow - $borrow->re_value;
+            if($checkval < $borrow->value){
+                $borrow->value = $checkval;
+            }
+        }
         $info = Info::limit(1)->first();
         return view('supplier_period',compact('day','currentType','dataCustomer','borrow','info'));
+    }
+    public function closePeriod(Request $request){
+        $getNewPeriod = customerPeriods::where(['customer_id'=>$request->customer])->max('period_id') + 1;
+        $getData = Customers::limit(1)->with('suppliers_periods','suppliers_day')->where(['id'=>$request->customer])->first();
+        if($request->valBorrow > $getData->money){
+            return 'قيمة سداد السلفه اكبر من المبلغ المستحق';
+        }
+        return $this->incBorrow($request->customer,$request->valBorrow);
+        $addNewPeriod = customerPeriods::create([
+            'customer'=>$request->customer,
+            'period_id'=>$getNewPeriod,
+        ]);
+        if($addNewPeriod){
+            foreach ($getData->suppliers_periods as $row){
+                $saveData = periodsData::create([
+                    'customer'=>$row->customer,
+                    'customer_period'=>$getNewPeriod,
+                    'date'=>$row->date,
+                    'day'=>$row->day,
+                    'shift'=>$row->shift,
+                    'type'=>$row->type,
+                    'type_name'=>$row->type_name,
+                    'price'=>$row->price,
+                    'quantity'=>$row->quantity,
+                ]);
+            }
+            foreach ($getData->suppliers_day as $row){
+                $saveData = periodsData::create([
+                    'customer'=>$row->customer,
+                    'customer_period'=>$getNewPeriod,
+                    'date'=>$row->date,
+                    'day'=>$row->day,
+                    'shift'=>$row->shift,
+                    'type'=>$row->type,
+                    'type_name'=>$row->type_name,
+                    'price'=>$row->price,
+                    'quantity'=>$row->quantity,
+                ]);
+            }
+            $customerBorrow = customersBorrow::limit(1)->where(['customer_id'=>$request->customer,'status'=>1])->first();
+        }
+        return $getData;
+    }
+    protected function incBorrow($customer,$valBorrow){
+        $customerBorrow = customersBorrow::limit(1)->where(['customer_id'=>$customer,'status'=>1])->first();
+        $checkval = $customerBorrow->borrow - $customerBorrow->re_value;
+        if($checkval < $customerBorrow->value){
+            $valBorrow = $checkval;
+        }
+        $add = procurementBorrow::create([
+            'customer_id'=>$customer,
+            'user_id'=>$this->getUser(),
+            'value'=>$valBorrow,
+            'date'=>$this->getDate(),
+        ]);
+        if($add){
+            $customerBorrow->re_value += $valBorrow;
+            if($customerBorrow->re_value == $customerBorrow->borrow){
+                $customerBorrow->value = 0;
+                $customerBorrow->status = 0;
+                $customerBorrow->status_ar = 'تم السداد';
+            }
+            $customerBorrow->save();
+        }
     }
 }
 

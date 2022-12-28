@@ -14,15 +14,19 @@
             window.print();
             location.reload();
         }
-        // function changeToatal(){
-        //     let element = document.getElementById("borrowValue");
-        //     let totalCheck = document.getElementById("totalCheck").innerHTML;
-        //     let newBorrow = document.getElementById("borrowValue").value;
-        //     let borrow = element.getAttribute("borrow");
-        //     let decTotal = (+totalCheck) - (+borrow);
-        //     let newToatal = (+decTotal) + (+newBorrow);
-        //     console.log(totalCheck)
-        // }
+        function closePeriod(){
+            let borrow = document.getElementById("borrowValue");
+            let valBorrow = 0;
+            let priceValue = document.getElementById("totalCheck").value;
+            if(borrow){valBorrow = borrow.value}
+            axios.post('/closePeriod',{
+                    customer:'{{$dataCustomer['id']}}',
+                    valBorrow,
+                    priceValue
+            }).then((response) =>{
+                onclick()
+            })
+        }
     </script>
     <section class="component_items d-block p-5" id="printerPage">
         <div class="row">
@@ -66,14 +70,17 @@
                 </div>
                 <div class="d-flex gap-2 mt-2">
                     <span>المبلغ المستحق : </span>
-                    <span id="totalCheck">{{$dataCustomer['total'] - $borrow['value']}}</span>
+                    <input id="totalCheck" value="{{$dataCustomer['money']  - $borrow['value']}}">
                 </div>
                 @endif
             </div>
         </div>
         <!-- Button trigger modal -->
-        <button type="button" onclick="printClintes()" class="btn btn-primary d-print-none">طباعة لعميل</button>
-        <button type="button" onclick="printOwner()" class="btn btn-warning d-print-none">طباعة</button>
+        <div class="d-flex gap-2">
+            <button type="button" onclick="printClintes()" class="btn btn-primary d-print-none">طباعة لعميل</button>
+            <button type="button" onclick="printOwner()" class="btn btn-warning d-print-none">طباعة</button>
+            <button type="button" onclick="closePeriod()" class="btn btn-success d-print-none">تقفيل المدة</button>
+        </div>
         <div class="table-responsive mt-3">
             <table class="table table-hover table-striped text-center table-bordered">
                 <thead>
@@ -135,13 +142,13 @@
                         </div>
                         <div class="col-3">
                             <div class="d-flex gap-2 mt-2">
-                                <span> العنوان: </span>
+                                <span> الهاتف: </span>
                                 <span>{{$info->phone}}</span>
                             </div>
                         </div>
                         <div class="col-3">
                             <div class="d-flex gap-2 mt-2">
-                                <span> الهاتف: </span>
+                                <span> العنوان: </span>
                                 <span>{{$info->location}}</span>
                             </div>
                         </div>

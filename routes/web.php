@@ -94,4 +94,5 @@ Route::group(['controller'=>followSuppliersController::class],function (){
     Route::post('getCustomersPeriod','fetchData');
     Route::post('getCustomersPeriodLocation','fetchDataLocation');
     Route::get('detailsSupplier/supplier/{user}','detailsSupplier');
+    Route::post('closePeriod','closePeriod');
 });

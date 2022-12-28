@@ -31,8 +31,9 @@
                             <th>العميل</th>
                             <th>السلفة</th>
                             <th>الخصم</th>
-                            <th>المتبقي</th>
+                            <th>المسدد</th>
                             <th>التاريخ</th>
+                            <th>الحاله</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -55,6 +56,9 @@
                             </td>
                             <td>
                                 <span>{{ customer.date }}</span>
+                            </td>
+                            <td>
+                                <span :class="customer.status == 1?'text-danger':'text-success'">{{ customer.status_ar }}</span>
                             </td>
                             <td>
                                 <button class="btn btn-primary mx-2 my-2 text-center" v-if="edit != customer.id" @click="changeRow(customer)">تعديل</button>
@@ -105,7 +109,9 @@ export default {
                         borrow:loc.borrow,
                         value:loc.value,
                         date:loc.date,
-                        re_value:loc.re_value
+                        re_value:loc.re_value,
+                        status_ar:loc.status_ar,
+                        status:loc.status
                     })
                 });
             });

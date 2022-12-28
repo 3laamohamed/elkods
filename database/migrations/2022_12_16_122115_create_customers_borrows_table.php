@@ -21,6 +21,8 @@ class CreateCustomersBorrowsTable extends Migration
             $table->double('re_value',10,2);
             $table->string('date');
             $table->integer('user');
+            $table->string('status_ar')->default('فعالة');
+            $table->integer('status')->default(1);
             $table->text('note')->nullable();
             $table->timestamps();
         });
