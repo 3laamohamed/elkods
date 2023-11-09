@@ -9,6 +9,9 @@ use App\Http\Controllers\MilkSupplyController;
 use App\Http\Controllers\customerMoneyController;
 use App\Http\Controllers\customersBorrowController;
 use App\Http\Controllers\followSuppliersController;
+use App\Http\Controllers\PendingPeriodsController;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\SalesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,4 +98,30 @@ Route::group(['controller'=>followSuppliersController::class],function (){
     Route::post('getCustomersPeriodLocation','fetchDataLocation');
     Route::get('detailsSupplier/supplier/{user}','detailsSupplier');
     Route::post('closePeriod','closePeriod');
+    Route::post('getCustomerDetails','getCustomerDetails')->name('getCustomerDetails');
 });
+
+########################################## Pending Periods ####################################
+Route::group(['controller'=>PendingPeriodsController::class],function (){
+    Route::get('viewCustomerPending','index')->name('viewCustomerPending');
+    Route::post('getCustomerPending','fetchData');
+    Route::post('getCustomerPendingLocation','fetchDataLocation');
+    Route::get('detailsSupplierPending/supplier/{user}','detailsSupplier');
+    Route::post('closePeriodPending','closePeriod');
+});
+
+########################################### Products ######################################
+Route::group(['controller'=>ProductsController::class],function(){
+    Route::get('viewProducts','index')->name('viewProducts');
+    Route::post('getProducts','getProducts');
+    Route::post('savProducts','savProducts');
+    Route::post('deleteProduct','deleteProduct');
+    Route::post('updateProduct','updateProduct');
+});
+
+########################################### Products ######################################
+Route::group(['controller'=>SalesController::class],function(){
+    Route::get('viewSales','index')->name('viewSales');
+});
+
+

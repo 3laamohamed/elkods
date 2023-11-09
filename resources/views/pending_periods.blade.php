@@ -2,6 +2,6 @@
 @extends('layouts.app')
 @section('content')
     <section class="component_items">
-        <follow_suppliers/>
+        <pending_periods/>
     </section>
 @stop

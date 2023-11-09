@@ -1,7 +1,7 @@
-@php $title='فترات معلقة';@endphp
+@php $title='المبيعات';@endphp
 @extends('layouts.app')
 @section('content')
     <section class="component_items">
-        <follow_suppliers/>
+        <sales/>
     </section>
 @stop

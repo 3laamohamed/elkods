@@ -174,6 +174,9 @@ th, td {
     white-space: nowrap;
 }
 /* End Fix Bootstrap Err */
+#div_printer *{
+    font-size: 10px !important;
+}
 /* Start Navbar Design */
 nav.navbar {
     background-color: var(--dark-color);
@@ -360,4 +363,41 @@ aside li.active a::before {
 }
 
 /* End Wrapper Design */
-
+.customer-info .icon{
+    min-width: 60px;
+    background-color: rgba(var(--main-color), 1);
+    padding: 10px;
+    text-align: center;
+    border-radius: 0 10px 10px 0;
+    color: white
+}
+.customer-info .icon.text {
+    min-width: 150px;
+}
+.customer-info .d-flex span:last-child,
+.customer-info .d-flex input:last-child{
+    width: 100%;
+    max-width: 200px;
+    background-color: white;
+    padding: 10px;
+    border-radius:  10px 0 0 10px;
+    border: 1px solid rgba(var(--main-color), 0.8);
+ }
+.customer-info .d-flex input:last-child,
+.customer-info .d-flex span.text-2{
+    max-width: 112px;
+}
+/*.customer-info .d-flex select{*/
+/*    flex-grow: 1;*/
+/*    background-color: white;*/
+/*    padding: 10px;*/
+/*    border-radius:  0 0 0 0;*/
+/*    border: 1px solid rgba(var(--main-color), 1);*/
+/*}*/
+.supplier-header .search{
+    color: white;
+    background-color: rgba(var(--main-color), 1);
+    padding: 0 20px;
+    border-radius: 5px;
+    width: fit-content;
+}

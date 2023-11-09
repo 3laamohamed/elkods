@@ -104,6 +104,25 @@
               <span>متابعة الموردين</span>
           </a>
       </li>
+      <li class="@if(Route::current()->getName() == 'viewCustomerPending') active @endif">
+          <a href="{{route('viewCustomerPending')}}">
+              <i class="fa-sharp fa-solid fa-box-archive fa-xl"></i>
+              <span>فترات معلقة</span>
+          </a>
+      </li>
+      <li class="@if(Route::current()->getName() == 'viewProducts') active @endif">
+          <a href="{{route('viewProducts')}}">
+              <i class="fa-solid fa-store fa-xl"></i>
+              <span>المنتجات</span>
+          </a>
+      </li>
+      <li class="@if(Route::current()->getName() == 'viewSales') active @endif">
+          <a href="{{route('viewSales')}}">
+              <i class="fa-solid fa-cart-shopping fa-xl"></i>
+              <span>المبيعات</span>
+          </a>
+      </li>
       </ul>
     </aside>
     <!-- End Sidebar -->
+

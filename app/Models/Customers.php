@@ -25,5 +25,8 @@ class Customers extends Model
     public function suppliers_day(){
         return $this->hasMany(milkSupply::class , 'customer','id');
     }
+    public function pending_periods(){
+        return $this->hasMany(pendingPeriods::class , 'customer','id');
+    }
 }
 

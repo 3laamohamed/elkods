@@ -10,65 +10,62 @@ use App\Models\customersBorrow;
 use App\Models\Info;
 use App\Models\Locations;
 use App\Models\milkSupply;
+use App\Models\pendingPeriods;
 use App\Models\periodsData;
 use App\Models\PeriodWeek;
 use App\Models\procurementBorrow;
 use App\Models\ProductType;
 use App\Models\supplyPeriod;
-use App\Traits\MainFunction;
 use Illuminate\Http\Request;
+use App\Traits\MainFunction;
 
-
-class followSuppliersController extends Controller
-{
+class PendingPeriodsController extends Controller{
     use MainFunction;
+
     public function __construct()
     {
         $this->middleware('auth');
     }
     public function index(){
-        return view('follow_suppliers');
+        return view('pending_periods');
     }
+
     public function getCustomerTotal($getCustomers){
         $customers = [];
         $counter = 0;
         foreach ($getCustomers as $customer){
-            $customers[$counter]['id'] = $customer->id;
-            $customers[$counter]['name'] = $customer->name;
-            $customers[$counter]['phone'] = $customer->phone;
-            $customers[$counter]['money'] = $customer->money;
-            if($customer->locations){
-                $customers[$counter]['location'] = $customer->locations->name;
-            }
-            $quantity = 0;
-            $total = 0;
-            foreach ($customer->suppliers_periods as $one){
-                $quantity += $one->quantity;
-                $total += $one->quantity * $one->price;
-            }
-            foreach ($customer->suppliers_day as $one){
-                $quantity += $one->quantity;
-                $total += $one->quantity * $one->price;
-            }
-            $customers[$counter]['qty'] = $quantity;
-            $customers[$counter]['total'] = $total;
-            $quantity = 0;
-            $total = 0;
-            $counter++;
+                $customers[$counter]['id'] = $customer->id;
+                $customers[$counter]['name'] = $customer->name;
+                $customers[$counter]['phone'] = $customer->phone;
+                $customers[$counter]['money'] = $customer->money;
+                if($customer->locations){
+                    $customers[$counter]['location'] = $customer->locations->name;
+                }
+                $quantity = 0;
+                $total = 0;
+                foreach ($customer->pending_periods as $one){
+                    $quantity += $one->quantity;
+                    $total += $one->quantity * $one->price;
+                }
+                $customers[$counter]['qty'] = $quantity;
+                $customers[$counter]['total'] = $total;
+                $quantity = 0;
+                $total = 0;
+                $counter++;
         }
         return $customers;
     }
     public function fetchData(Request $request){
         $locations = Locations::get()->all();
         $products = ProductType::get()->all();
-        $getCustomers =  Customers::with('suppliers_periods','suppliers_day')->where(['type'=>'مورد'])->get();
+        $getCustomers =  Customers::with('pending_periods')->where(['type'=>'مورد'])->get();
         return ['locations'=>$locations,'products'=>$products,'customers'=>$this->getCustomerTotal($getCustomers)];
     }
     public function fetchDataLocation(Request $request){
         if($request->id != 'all'){
-            $getCustomers =  Customers::with('suppliers_periods','suppliers_day')->where(['type'=>'مورد','location'=>$request->id])->get();
+            $getCustomers =  Customers::with('pending_periods')->where(['type'=>'مورد','location'=>$request->id])->get();
         }else{
-            $getCustomers =  Customers::with('suppliers_periods','suppliers_day')->where(['type'=>'مورد'])->get();
+            $getCustomers =  Customers::with('pending_periods')->where(['type'=>'مورد'])->get();
         }
         return ['customers'=>$this->getCustomerTotal($getCustomers)];
     }
@@ -80,15 +77,9 @@ class followSuppliersController extends Controller
         $day = [];
         $periods = PeriodWeek::select(['id','name'])->get();
         $getCustomer =  Customers::limit(1)
-            ->with('suppliers_periods','suppliers_day','locations','locations.startperiod','locations.endperiod')
+            ->with('pending_periods','locations','locations.startperiod','locations.endperiod')
             ->where(['id'=>$customer,'type'=>'مورد'])->first();
-        $supliersPeriods = $getCustomer->suppliers_periods;
-        $supliersDay = $getCustomer->suppliers_day;
-        $anCounter = sizeof($supliersPeriods);
-        foreach ($supliersDay as $one){
-            $supliersPeriods[$anCounter] = $one;
-            $anCounter++;
-        }
+        $supliersPeriods = $getCustomer->pending_periods;
         $counterDay = $getCustomer->locations->s_period;
         $customer = $getCustomer->id;
         foreach ($periods as $oneDay){
@@ -164,7 +155,7 @@ class followSuppliersController extends Controller
                 }
             }
         }
-        $getCustomers =  Customers::with('suppliers_periods','suppliers_day')->where(['id'=>$costomerSearch])->get();
+        $getCustomers =  Customers::with('pending_periods')->where(['id'=>$costomerSearch])->get();
         $dataCustomer =  $this->getCustomerTotal($getCustomers);
         $dataCustomer = $dataCustomer[0];
         $borrow = customersBorrow::limit(1)->where(['customer_id'=>$costomerSearch,'status'=>1])->first();
@@ -177,12 +168,11 @@ class followSuppliersController extends Controller
         $info = Info::limit(1)->first();
         $locations = Locations::get()->all();
         $customersLocation = Customers::where(['location'=>$getCustomer->location,'type'=>'مورد'])->get();
-
-        return view('supplier_period',compact('day','currentType','dataCustomer','borrow','info','locations','customersLocation','realCounter'));
+        return view('supplier_period_pending',compact('day','currentType','dataCustomer','borrow','info','locations','customersLocation','realCounter'));
     }
     public function closePeriod(Request $request){
         $getNewPeriod = customerPeriods::where(['customer_id'=>$request->customer])->max('period_id') + 1;
-        $getData = Customers::limit(1)->with('suppliers_periods','suppliers_day')->where(['id'=>$request->customer])->first();
+        $getData = Customers::limit(1)->with('pending_periods')->where(['id'=>$request->customer])->first();
         if($request->valBorrow > $getData->money){
             return ['status'=>false,'data'=>'قيمة سداد السلفه اكبر من المبلغ المستحق'];
         }
@@ -196,7 +186,7 @@ class followSuppliersController extends Controller
             'date'=>$this->getDate(),
         ]);
         if($addNewPeriod){
-            foreach ($getData->suppliers_periods as $row){
+            foreach ($getData->pending_periods as $row){
                 $saveData = periodsData::create([
                     'period_id'=>$getNewPeriod,
                     'date'=>$row->date,
@@ -207,20 +197,7 @@ class followSuppliersController extends Controller
                     'price'=>$row->price,
                     'quantity'=>$row->quantity,
                 ]);
-                supplyPeriod::find($row->id)->delete();
-            }
-            foreach ($getData->suppliers_day as $row){
-                $saveData = periodsData::create([
-                    'period_id'=>$getNewPeriod,
-                    'date'=>$row->date,
-                    'day'=>$row->day,
-                    'shift'=>$row->shift,
-                    'type'=>$row->type,
-                    'type_name'=>$row->type_name,
-                    'price'=>$row->price,
-                    'quantity'=>$row->quantity,
-                ]);
-                milkSupply::find($row->id)->delete();
+                pendingPeriods::find($row->id)->delete();
             }
             $saveExchange = customerMoney::create([
                 'date'=>$this->getDate(),
@@ -265,6 +242,6 @@ class followSuppliersController extends Controller
         }
     }
     public function getCustomerDetails(Request $request){
-        return redirect('detailsSupplier/supplier/' . $request->customer );
+        return redirect('detailsSupplierPending/supplier/' . $request->customer );
     }
 }

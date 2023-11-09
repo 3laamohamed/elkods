@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\customerClosePeriod;
 use App\Models\Customers;
 use App\Models\Locations;
 use App\Models\milkSupply;
@@ -20,6 +21,8 @@ class MilkSupplyController extends Controller
     }
     public function index(){
         $this->endDay();
+        $this->endPeriodLocations();
+        $this->deleteCustomerClosePeriods();
         return view('milk_supply');
     }
     protected function getSuppliersMilk($customers,$shift){
@@ -74,36 +77,40 @@ class MilkSupplyController extends Controller
         return ['customers'=>$this->getSuppliersMilk($customers,$request->shift)];
     }
     public function saveOrderSupply(Request $request){
-       foreach ($request->order as $order){
-           if(isset($order['row'])){
-               $getRow = milkSupply::find($order['row']);
-               $moneyDec = $getRow->price * $getRow->quantity;
-               $this->decreaseMoney($request->id,$moneyDec);
-               $getRow->price = $order['price'];
-               $getRow->quantity = $order['quantity'];
-               $moneyInc = $order['price'] * $order['quantity'];
-               $this->increaseMoney($request->id,$moneyInc);
-               $getRow->save();
+        if(customerClosePeriod::where(['date'=>$this->getDate(),'customer_id'=>$request->id])->count() == 0){
+            foreach ($request->order as $order){
+                if(isset($order['row'])){
+                    $getRow = milkSupply::find($order['row']);
+                    $moneyDec = $getRow->price * $getRow->quantity;
+                    $this->decreaseMoney($request->id,$moneyDec);
+                    $getRow->price = $order['price'];
+                    $getRow->quantity = $order['quantity'];
+                    $moneyInc = $order['price'] * $order['quantity'];
+                    $this->increaseMoney($request->id,$moneyInc);
+                    $getRow->save();
 //               return ['status'=>true,'data'=>'تم التعديل بنجاح'];
-           }elseif(!isset($order['row']) && $order['quantity'] != ''){
-                $day =  Carbon::today('Africa/Cairo');
-                $dayIn = PeriodWeek::where(['name_en'=>$day->format('l')])->first();
-               $addRow = milkSupply::create([
-                   'customer'=>$request->id,
-                   'date'=>$day->toDateString(),
-                   'day'=>$dayIn ->name,
-                   'shift'=>$request->shift,
-                   'type'=>$order['type_id'],
-                   'type_name'=>$order['type_name'],
-                   'price'=>$order['price'],
-                   'quantity'=>$order['quantity'],
-               ]);
-               $money = $order['price'] * $order['quantity'];
-               $this->increaseMoney($request->id,$money);
-           }
-       }
-        $customer =  Customers::limit(1)->with('price','price.pricequantity')->where(['id'=>$request->id])->get();
-       $newcus = $this->getSuppliersMilk($customer,$request->shift);
-        return ['status'=>true,'customer'=>$newcus[0],'data'=>'تم الحفط بنجاح'];
+                }elseif(!isset($order['row']) && $order['quantity'] != ''){
+                    $day =  Carbon::today('Africa/Cairo');
+                    $dayIn = PeriodWeek::where(['name_en'=>$day->format('l')])->first();
+                    $addRow = milkSupply::create([
+                        'customer'=>$request->id,
+                        'date'=>$day->toDateString(),
+                        'day'=>$dayIn ->name,
+                        'shift'=>$request->shift,
+                        'type'=>$order['type_id'],
+                        'type_name'=>$order['type_name'],
+                        'price'=>$order['price'],
+                        'quantity'=>$order['quantity'],
+                    ]);
+                    $money = $order['price'] * $order['quantity'];
+                    $this->increaseMoney($request->id,$money);
+                }
+            }
+            $customer =  Customers::limit(1)->with('price','price.pricequantity')->where(['id'=>$request->id])->get();
+            $newcus = $this->getSuppliersMilk($customer,$request->shift);
+            return ['status'=>true,'customer'=>$newcus[0],'data'=>'تم الحفط بنجاح'];
+        }else{
+            return ['status'=>false,'data'=>'تم قفل المدة لهذا العميل'];
+        }
     }
 }

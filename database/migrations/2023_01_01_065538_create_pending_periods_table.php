@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePeriodsDataTable extends Migration
+class CreatePendingPeriodsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreatePeriodsDataTable extends Migration
      */
     public function up()
     {
-        Schema::create('periods_data', function (Blueprint $table) {
+        Schema::create('pending_periods', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('period_id');
+            $table->integer('customer');
             $table->string('date',50);
             $table->string('day',25);
             $table->string('shift',20);
@@ -34,6 +34,6 @@ class CreatePeriodsDataTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('periods_data');
+        Schema::dropIfExists('pending_periods');
     }
 }

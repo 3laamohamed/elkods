@@ -1,4 +1,4 @@
-@php $title='فترة المورد';@endphp
+@php $title='فترة معلقة';@endphp
 @extends('layouts.app')
 @section('content')
     <script src="{{ asset('assets/js/sweetalert2@10.js') }}" ></script>
@@ -32,7 +32,7 @@
                 cancelButtonText: 'الغاء'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.post('/closePeriod',{
+                    axios.post('/closePeriodPending',{
                         customer:'{{$dataCustomer['id']}}',
                         valBorrow,
                         priceValue
@@ -74,6 +74,7 @@
             })
         }
         function calcTotal(){
+            let test = {{$dataCustomer['total']}}
             let customerMoney = document.getElementById('customer_money').textContent;
             let borrowValueElement = document.getElementById('borrowValue');
             let borrowValue = 0;
@@ -81,8 +82,7 @@
             let totalCashPrint = document.getElementById('totalCashPrint');
             let borrowValuePrint = document.getElementById('borrowValuePrint');
             if(borrowValueElement){borrowValue =borrowValueElement.value}
-            console.log(borrowValue)
-            let finalTotal = +customerMoney - +borrowValue;
+            let finalTotal = +test - +borrowValue;
 
             totalCheck.value = finalTotal
             totalCashPrint.innerHTML = finalTotal
@@ -210,12 +210,11 @@
                 </tbody>
                 <tfoot class="table-dark sticky-bottom">
                     <tr>
-                        <td colspan="1">الاجمالى</td>
+                        <td colspan="2">الاجمالى</td>
                         <td>الكمية</td>
                         <td>{{$dataCustomer['qty']}}</td>
                         <td>السعر</td>
                         <td>{{$dataCustomer['total']}}</td>
-                        <td colspan="10"></td>
                     </tr>
                 </tfoot>
             </table>
@@ -320,7 +319,7 @@
                             </tbody>
                             <tfoot class="table-dark sticky-bottom">
                             <tr>
-                                <td colspan="1">الاجمالى</td>
+                                <td>الاجمالى</td>
                                 <td>الكمية</td>
                                 <td>{{$dataCustomer['qty']}}</td>
                                 <td>السعر</td>

@@ -46,14 +46,14 @@
                                 <span v-if="edite!= customer.id">{{price.price}}</span>
                                 <div class="input-group" v-if="edite == customer.id">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-sack-dollar"></i></span>
-                                    <input type="text" class="form-control text-center" v-model="price.price" @input="changePrice(customer.id,price.id, price.price)">
+                                    <input type="text" class="form-control text-center" :value="price.price" @input="changePrice(price.id, price.price)">
                                 </div>
                             </td>
                             <td>
                                 <span v-if="edite!= customer.id">{{price.quantity}}</span>
                                 <div class="input-group" v-if="edite == customer.id">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-weight-scale"></i></span>
-                                    <input type="number" class="form-control text-center" v-model="price.quantity" @input="changeQuantity(customer.id,price.id,price.quantity)">
+                                    <input type="number" class="form-control text-center" :value="price.quantity" @input="changeQuantity(price.id,$event.target.value)">
                                 </div>
                             </td>
                         </template>
@@ -148,17 +148,29 @@ export default {
                order:this.updatePrice,
                shift:this.shift
             }).then(res=>{
-                this.customers[index] = res.data.customer
-               this.edite = ''
-               this.totalQty = []
-               this.calcFooterTable()
-               this.$swal({
-                   position: 'center-center',
-                   icon: 'success',
-                   title: res.data.data,
-                   showConfirmButton: false,
-                   timer: 1500
-               })
+                if(res.data.status == true){
+                    this.customers[index] = res.data.customer
+                    this.edite = ''
+                    this.totalQty = []
+                    this.calcFooterTable()
+                    this.$swal({
+                        position: 'center-center',
+                        icon: 'success',
+                        title: res.data.data,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }else if(res.data.status == false){
+                    this.edite = ''
+                    this.totalQty = []
+                    this.calcFooterTable()
+                    this.$swal({
+                        position: 'center-center',
+                        icon: 'error',
+                        title: res.data.data,
+                        showConfirmButton: true,
+                    })
+                }
            })
         },
         changeShift(){

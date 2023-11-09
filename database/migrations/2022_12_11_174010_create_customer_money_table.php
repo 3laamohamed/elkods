@@ -20,7 +20,7 @@ class CreateCustomerMoneyTable extends Migration
             $table->integer('customer_id');
             $table->double('money',10,2);
             $table->text('note')->nullable();
-            $table->integer('user')();
+            $table->integer('user');
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePeriodsDataTable extends Migration
+class CreateProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,14 @@ class CreatePeriodsDataTable extends Migration
      */
     public function up()
     {
-        Schema::create('periods_data', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('period_id');
-            $table->string('date',50);
-            $table->string('day',25);
-            $table->string('shift',20);
-            $table->integer('type');
-            $table->string('type_name',25);
+            $table->string('name');
             $table->double('price',10,2);
-            $table->double('quantity',10,2);
+            $table->double('l_price',10,2)->default(0);
+            $table->double('pay_price',10,2)->default(0);
+            $table->double('qty',10,2)->default(0);
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }
@@ -34,6 +32,6 @@ class CreatePeriodsDataTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('periods_data');
+        Schema::dropIfExists('products');
     }
 }
